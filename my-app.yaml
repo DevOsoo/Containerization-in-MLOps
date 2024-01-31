@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app-deployment
+spec:
+  selector:
+    matchLabels:
+      app: my-app
+  replicas: 2 # Specify the number of pods to run
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      containers:
+      - name: my-app-container
+        image: my-app:latest # Specify the image to use
+        ports:
+        - containerPort: 5000 # Specify the port to expose
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-app-service
+spec:
+  selector:
+    app: my-app
+  ports:
+  - protocol: TCP
+    port: 80 # Specify the port to expose to the outside world
+    targetPort: 5000 # Specify the port of the pod to route to
+  type: LoadBalancer # Specify the type of service
